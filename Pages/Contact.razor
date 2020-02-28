@@ -1,0 +1,11 @@
+﻿@page "/contact"
+@inject NavigationBar NavigationBar
+
+<div style="height: 80px;">
+	<TelerikMenu Data=@NavigationBar.MenuItems OnClick=@((NavigationBar.MenuItem item) => NavigationBar.NavigateTo(item))>
+	</TelerikMenu>
+</div>
+
+<p style="font-weight:bold;display:inline;margin-left:20px;">Email:</p> contact [at] amazonaddsup [dot] com
+
+

@@ -1,0 +1,184 @@
+﻿@page "/"
+@inject PrimaryPage PrimaryPage
+@inject NavigationBar NavigationBar
+
+<div style="height: 80px;">
+	<TelerikMenu Data=@NavigationBar.MenuItems OnClick=@((NavigationBar.MenuItem item) => NavigationBar.NavigateTo(item))>
+	</TelerikMenu>
+</div>
+
+<table style="border-collapse: separate;border-spacing: 20px;">
+	<tr>
+		<td><p style="font-weight:bold;display:inline;">Step 1:</p> Download Your Order History Report from Amazon</td>
+	</tr>
+	<tr>
+		<td><p style="display:inline;">https://www.amazon.com/gp/b2b/reports</p></td>
+	</tr>
+	<tr>
+		<td><p style="font-weight:bold;display:inline;">Step 2:</p> Select the File</td>
+	</tr>
+
+	<tr>
+		<td><input type="file" @ref=PrimaryPage.FileSelector /></td>
+	</tr>
+	<tr><td><p style="font-weight: bold;display:inline;">Step 3:</p></td></tr>
+	<tr>
+		<td>
+			<TelerikButton OnClick=@PrimaryPage.ReadFile Primary="true">Read the Report</TelerikButton>
+		</td>
+	</tr>
+
+</table>
+
+<div style=@PrimaryPage.UiStyle>
+
+	<table>
+		<tr>
+			<td>From:</td>
+			<td><TelerikDatePicker @bind-Value=@PrimaryPage.StartDate></TelerikDatePicker></td>
+
+		</tr>
+		<tr>
+			<td>
+				To:
+			</td>
+			<td>
+				<TelerikDatePicker @bind-Value=@PrimaryPage.EndDate></TelerikDatePicker>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<TelerikButton OnClick=@PrimaryPage.ApplyFilter Primary="true">Filter</TelerikButton>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<TelerikButton OnClick=@PrimaryPage.SaveReport Primary="true">Save Report</TelerikButton>
+			</td>
+		</tr>
+
+	</table>
+
+	<br />
+
+	<div id="ReportScreenshotArea">
+
+		<div id="summary-statistics-grid-wrapper">
+			<TelerikGrid Data=@PrimaryPage.Datasets.Summary
+						 Pageable="false" Sortable="false" Groupable="false"
+						 FilterMode="Telerik.Blazor.GridFilterMode.FilterRow"
+						 Resizable="true" ScrollMode="Telerik.Blazor.GridScrollMode.Scrollable" Height="100">
+				<GridColumns>
+					<GridColumn Field=@(nameof(Summary.Name)) />
+					<GridColumn Field=@(nameof(Summary.Value)) />
+				</GridColumns>
+			</TelerikGrid>
+		</div>
+
+		<TelerikChart>
+			<ChartTitle Text="By Category"></ChartTitle>
+			<ChartLegend Visible="false" Position="ChartLegendPosition.Top"></ChartLegend>
+
+			<ChartSeriesItems>
+				<ChartSeries Type="ChartSeriesType.Donut"
+							 Data=@PrimaryPage.Datasets.CategorySpendings
+							 Field=@nameof(CategorySpending.TotalSpent)
+							 CategoryField=@nameof(CategorySpending.CategoryIdForDisplay)>
+					<ChartSeriesLabels Position="ChartSeriesLabelsPosition.OutsideEnd"
+									   Visible="true"
+									   Background="transparent"
+									   Template="#= dataItem.DonutChartLabel #">
+					</ChartSeriesLabels>
+				</ChartSeries>
+			</ChartSeriesItems>
+
+		</TelerikChart>
+
+		<TelerikChart>
+			<ChartTitle Text="By Brand"></ChartTitle>
+			<ChartLegend Visible="false" Position="ChartLegendPosition.Top"></ChartLegend>
+
+			<ChartSeriesItems>
+				<ChartSeries Type="ChartSeriesType.Donut"
+							 Data=@PrimaryPage.Datasets.BrandSpendings
+							 Field=@nameof(BrandSpending.TotalSpent)
+							 CategoryField=@nameof(BrandSpending.BrandName)>
+					<ChartSeriesLabels Position="ChartSeriesLabelsPosition.OutsideEnd"
+									   Visible="true"
+									   Background="transparent"
+									   Template="#= dataItem.DonutChartLabel # - #= round(percentage * 100, 1)#%">
+					</ChartSeriesLabels>
+				</ChartSeries>
+			</ChartSeriesItems>
+
+		</TelerikChart>
+
+		<br />
+
+		<TelerikChart>
+			<ChartTitle Text="By Month"></ChartTitle>
+			<ChartLegend Visible="false"></ChartLegend>
+
+			<ChartSeriesItems>
+				<ChartSeries Type="ChartSeriesType.Column"
+							 Data=@PrimaryPage.Datasets.MonthlySpendings.Data
+							 Field=@nameof(MonthlySpending.TotalSpent)>
+
+				</ChartSeries>
+			</ChartSeriesItems>
+
+			<ChartCategoryAxes>
+				<ChartCategoryAxis Categories=@PrimaryPage.Datasets.MonthlySpendings.Labels></ChartCategoryAxis>
+			</ChartCategoryAxes>
+
+		</TelerikChart>
+
+		<br />
+
+		<br />
+		<div style=@PrimaryPage.UiYearlySpendingsStyle>
+
+			<TelerikChart>
+				<ChartTitle Text="By Year"></ChartTitle>
+				<ChartLegend Visible="false"></ChartLegend>
+
+				<ChartSeriesItems>
+					<ChartSeries Type="ChartSeriesType.Column"
+								 Data=@PrimaryPage.Datasets.YearlySpendings.Data
+								 Field=@nameof(YearlySpending.TotalSpent)>
+
+					</ChartSeries>
+				</ChartSeriesItems>
+
+				<ChartCategoryAxes>
+					<ChartCategoryAxis Categories=@PrimaryPage.Datasets.YearlySpendings.Labels></ChartCategoryAxis>
+				</ChartCategoryAxes>
+
+			</TelerikChart>
+
+			<br />
+		</div>
+	</div>
+
+	<TelerikGrid Data=@PrimaryPage.Datasets.Items Height="400px"
+				 Pageable="true" Sortable="true" Groupable="false"
+				 FilterMode="Telerik.Blazor.GridFilterMode.FilterRow"
+				 Resizable="true" Reorderable="true">
+		<GridToolBar>
+			<p style="text-align:center;">All Purchased Items</p>
+		</GridToolBar>
+		<GridColumns>
+			<GridColumn Field=@(nameof(Item.Date)) />
+			<GridColumn Field=@(nameof(Item.Id)) Title="Purchase Id" />
+			<GridColumn Field=@(nameof(Item.Title)) Title="Title" />
+			<GridColumn Field=@(nameof(Item.ASIN)) Title="ASIN (Product ID)" />
+			<GridColumn Field=@(nameof(Item.Category)) Title="Category" />
+			<GridColumn Field=@(nameof(Item.InferredBrand)) Title="Brand" Groupable="true" />
+			<GridColumn Field=@(nameof(Item.Total)) Title="Total $" />
+		</GridColumns>
+	</TelerikGrid>
+	<br />
+
+</div>
+
+

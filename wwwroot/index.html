@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width" />
+	<title>Amazon Adds-Up</title>
+	<base href="/" />
+	<link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+	<link href="css/site.css" rel="stylesheet" />
+	<link rel="stylesheet" href="https://unpkg.com/@progress/kendo-theme-default@latest/dist/all.css" />
+	<script src="template-helpers.js"></script>
+	<script src="html2canvas.js"></script>
+	<script src="_content/Telerik.UI.for.Blazor/js/telerik-blazor.js" defer></script>
+	<script>
+		// Adapted from:
+		// https://stackoverflow.com/questions/31656689/how-to-save-img-to-users-local-computer-using-html2canvas
+		function SaveScreenshot(uri, filename) {
+
+			var link = document.createElement('a');
+
+			if (typeof link.download === 'string') {
+
+				link.href = uri;
+				link.download = filename;
+
+				//Firefox requires the link to be in the body
+				document.body.appendChild(link);
+
+				//simulate click
+				link.click();
+
+				//remove the link when done
+				document.body.removeChild(link);
+
+			} else {
+
+				window.open(uri);
+
+			}
+		}
+
+		function SaveReport(fileName) {
+			html2canvas(document.querySelector('#ReportScreenshotArea')).then(function (canvas) {
+				SaveScreenshot(canvas.toDataURL(), fileName);
+			});
+		}
+	</script>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-159241419-1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag() { dataLayer.push(arguments); }
+		gtag('js', new Date());
+
+		gtag('config', 'UA-159241419-1');
+	</script>
+</head>
+
+<body>
+	<app>Loading...</app>
+
+	<div id="blazor-error-ui">
+		An unhandled error has occurred.
+		<a href="" class="reload">Reload</a>
+		<a class="dismiss">🗙</a>
+	</div>
+	<script src="_framework/blazor.webassembly.js"></script>
+</body>
+
+</html>

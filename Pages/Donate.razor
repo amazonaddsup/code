@@ -1,0 +1,20 @@
+﻿@page "/donate"
+@inject NavigationBar NavigationBar
+
+<div style="height: 80px;">
+	<TelerikMenu Data=@NavigationBar.MenuItems OnClick=@((NavigationBar.MenuItem item) => NavigationBar.NavigateTo(item))>
+	</TelerikMenu>
+</div>
+
+<div>
+	<p style="font-weight:bold;margin-left:120px;">BitCoin</p>
+	<img src="media/bitcoin_receive_address.png" />
+	<p><a href="bitcoin:BC1QRJVMGSZP3JRGJT98VXXDE5SLSP7GAWUMD2N8GJ">BC1QRJVMGSZP3JRGJT98VXXDE5SLSP7GAWUMD2N8GJ</a></p>
+</div>
+
+<div>
+	<p style="font-weight:bold;margin-left:100px;">Monero</p>
+	<img src="media/monero_receive_address.png" />
+	<p><a href="monero:49ACqnCX916WnyGHPW3QopUgH8MSEqwxa4W8EDNt7soU24DgPR9UFQVdPwtcUAqvkSUiTPEyarak24q132q6dh4667L7NoG">49ACqnCX916WnyGHPW3QopUgH8MSEqwxa4W8EDNt7soU24DgPR9UFQVdPwtcUAqvkSUiTPEyarak24q132q6dh4667L7NoG</a></p>
+</div>
+

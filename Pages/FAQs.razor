@@ -1,0 +1,14 @@
+﻿@page "/faqs"
+@inject NavigationBar NavigationBar
+
+<div style="height: 80px;">
+	<TelerikMenu Data=@NavigationBar.MenuItems OnClick=@((NavigationBar.MenuItem item) => NavigationBar.NavigateTo(item))>
+	</TelerikMenu>
+</div>
+
+
+<p style="font-weight:bold;margin-left:20px;">Is my data being transmitted anywhere ?</p>
+<p style="margin-left:20px;">No. All calculations are done entirely using the web browser. The website is compiled to <a href="https://webassembly.org/">WASM</a> and has no server-side components.</p>
+
+<p style="font-weight:bold;margin-left:20px;">Why did you make this ?</p>
+<p style="margin-left:20px;">To visualize and better understand my own spending on Amazon.</p>
